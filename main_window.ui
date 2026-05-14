@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>707</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayoutMain">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayoutMainArea">
+      <item>
+       <widget class="QGroupBox" name="groupBoxConnection">
+        <property name="minimumSize">
+         <size>
+          <width>220</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>280</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="title">
+         <string>连接配置</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayoutConnection">
+         <item>
+          <layout class="QFormLayout" name="formLayoutConnection">
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelProtocol">
+             <property name="text">
+              <string>通信方式</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QComboBox" name="comboBoxProtocol"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="labelPort">
+             <property name="text">
+              <string>端口</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QComboBox" name="comboBoxPort"/>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="labelBaudRate">
+             <property name="text">
+              <string>波特率</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QComboBox" name="comboBoxBaudRate"/>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonRefreshPorts">
+           <property name="text">
+            <string>刷新端口</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonConnect">
+           <property name="text">
+            <string>打开连接</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonDisconnect">
+           <property name="text">
+            <string>关闭连接</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacerConnection">
+           <property name="orientation">
+            <enum>Qt::Orientation::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTabWidget" name="tabWidgetMain">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="tabOverview">
+         <attribute name="title">
+          <string>实时监控</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayoutOverview">
+          <item>
+           <widget class="QGroupBox" name="groupBoxRealtimeData">
+            <property name="title">
+             <string>实时数据</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayoutRealtimeData">
+             <item row="0" column="0">
+              <widget class="QLabel" name="labelTemperature">
+               <property name="text">
+                <string>温度：-- ℃</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLabel" name="labelPressure">
+               <property name="text">
+                <string>压力：-- MPa</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="labelVoltage">
+               <property name="text">
+                <string>电压：-- V</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLabel" name="labelSpeed">
+               <property name="text">
+                <string>转速：-- rpm</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBoxCurve">
+            <property name="title">
+             <string>实时曲线</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayoutCurve">
+             <item>
+              <widget class="QFrame" name="frameCurvePlaceholder">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>160</height>
+                </size>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::Shape::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Shadow::Sunken</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="tableWidgetData"/>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tabParams">
+         <attribute name="title">
+          <string>参数配置</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="tabLogs">
+         <attribute name="title">
+          <string>运行日志</string>
+         </attribute>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBoxDeviceControl">
+        <property name="minimumSize">
+         <size>
+          <width>180</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>240</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="title">
+         <string>设备控制</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayoutDeviceControl">
+         <item>
+          <widget class="QLabel" name="labelConnectionStatus">
+           <property name="text">
+            <string>连接状态：未连接</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelDeviceStatus">
+           <property name="text">
+            <string>设备状态：离线</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelAlarmStatus">
+           <property name="text">
+            <string>报警状态：正常</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonStart">
+           <property name="text">
+            <string>启动</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonStop">
+           <property name="text">
+            <string>停止</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonReset">
+           <property name="text">
+            <string>复位</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonReadParams">
+           <property name="text">
+            <string>读取参数</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonWriteParams">
+           <property name="text">
+            <string>写入参数</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacerDeviceControl">
+           <property name="orientation">
+            <enum>Qt::Orientation::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBoxCommunication">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>160</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>240</height>
+       </size>
+      </property>
+      <property name="title">
+       <string>通信收发</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayoutCommunication">
+       <item>
+        <widget class="QPlainTextEdit" name="plainTextEditReceiveLog">
+         <property name="placeholderText">
+          <string>接收日志 / 解析数据</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayoutSend">
+         <item>
+          <widget class="QLineEdit" name="lineEditSendCommand">
+           <property name="placeholderText">
+            <string>发送命令</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBoxHexSend">
+           <property name="text">
+            <string>HEX</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBoxTimedSend">
+           <property name="text">
+            <string>定时发送</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonSend">
+           <property name="text">
+            <string>发送</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonClearLog">
+           <property name="text">
+            <string>清空</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>37</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
