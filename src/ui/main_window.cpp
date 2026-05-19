@@ -13,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent)
     , m_serialManager(new SerialManager(this))
 {
     ui->setupUi(this);
+
+    // 初始化顺序：先设置控件默认状态，再连接信号槽，最后刷新可用端口。
     initSerialUi();
     initSerialConnections();
     refreshSerialPorts();
@@ -30,6 +32,8 @@ void MainWindow::refreshSerialPorts()
     const QString currentPort = ui->comboBoxSerialPort->currentText().trimmed();
 
     ui->comboBoxSerialPort->clear();
+
+    // 仅使用 Qt 官方枚举结果；虚拟串口路径由用户手动输入，避免扫描临时目录带来误匹配。
     const QList<QSerialPortInfo> ports = QSerialPortInfo::availablePorts();
     for (const QSerialPortInfo &portInfo : ports) {
         ui->comboBoxSerialPort->addItem(portInfo.systemLocation());
@@ -47,6 +51,7 @@ void MainWindow::refreshSerialPorts()
 
 void MainWindow::toggleSerialPort()
 {
+    // 单按钮切换：当前已打开则关闭，否则按界面参数尝试打开。
     if (m_serialManager->isOpen()) {
         closeSerialPort();
         return;
@@ -64,6 +69,7 @@ void MainWindow::openSerialPort()
         return;
     }
 
+    // UI 中的字符串参数在这里转换为 QSerialPort 所需的强类型枚举。
     const bool opened = m_serialManager->open(portName,
                                               ui->comboBoxBaudRate->currentText().toInt(),
                                               currentDataBits(),
@@ -88,6 +94,7 @@ void MainWindow::sendSerialData()
         return;
     }
 
+    // 发送成功后统一以十六进制显示，便于后续调试二进制协议。
     const qint64 written = m_serialManager->writeData(data);
     if (written >= 0) {
         ui->plainTextEditReceiveLog->appendPlainText(tr("TX: %1").arg(QString::fromUtf8(data.toHex(' ').toUpper())));
@@ -96,6 +103,7 @@ void MainWindow::sendSerialData()
 
 void MainWindow::handleSerialDataReceived(const QByteArray &data)
 {
+    // 当前阶段只做原始数据显示；结构化协议解析后续放到独立解析模块。
     ui->plainTextEditReceiveLog->appendPlainText(tr("RX: %1").arg(QString::fromUtf8(data.toHex(' ').toUpper())));
 }
 
@@ -107,6 +115,7 @@ void MainWindow::handleSerialError(const QString &message)
 
 void MainWindow::updateSerialUiState(bool open)
 {
+    // 串口状态变化后同步按钮文案，避免 UI 状态和真实连接状态不一致。
     ui->pushButtonOpenConnection->setText(open ? tr("关闭串口") : tr("打开串口"));
     ui->pushButtonSend->setEnabled(open);
 }
@@ -122,6 +131,7 @@ void MainWindow::initSerialUi()
 
 void MainWindow::initSerialConnections()
 {
+    // UI 控件信号只连接到主窗口槽函数，底层串口信号再由 SerialManager 转发。
     connect(ui->pushButtonRefreshPorts, &QPushButton::clicked,
             this, &MainWindow::refreshSerialPorts);
     connect(ui->pushButtonOpenConnection, &QPushButton::clicked,
@@ -172,6 +182,7 @@ QSerialPort::DataBits MainWindow::currentDataBits() const
 
 QSerialPort::Parity MainWindow::currentParity() const
 {
+    // 下拉框显示英文枚举名，转换时只处理当前 UI 提供的选项。
     const QString value = ui->comboBoxParity->currentText();
     if (value == "Even") {
         return QSerialPort::EvenParity;
@@ -184,6 +195,7 @@ QSerialPort::Parity MainWindow::currentParity() const
 
 QSerialPort::StopBits MainWindow::currentStopBits() const
 {
+    // 停止位存在 1.5 这种非整数显示值，因此按字符串映射。
     const QString value = ui->comboBoxStopBits->currentText();
     if (value == "1.5") {
         return QSerialPort::OneAndHalfStop;
@@ -196,6 +208,7 @@ QSerialPort::StopBits MainWindow::currentStopBits() const
 
 QSerialPort::FlowControl MainWindow::currentFlowControl() const
 {
+    // 流控制默认关闭；只有明确选择 Hardware/Software 时才启用。
     const QString value = ui->comboBoxFlowControl->currentText();
     if (value == "Hardware") {
         return QSerialPort::HardwareControl;

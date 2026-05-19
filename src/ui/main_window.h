@@ -12,6 +12,7 @@ QT_END_NAMESPACE
 
 class SerialManager;
 
+// 主窗口只负责 UI 状态和用户交互；串口底层操作交给 SerialManager。
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -21,6 +22,7 @@ public:
     ~MainWindow() override;
 
 private slots:
+    // UI 事件槽：负责把按钮点击和串口信号转换为界面状态变化。
     void refreshSerialPorts();
     void toggleSerialPort();
     void openSerialPort();
@@ -31,6 +33,7 @@ private slots:
     void updateSerialUiState(bool open);
 
 private:
+    // 初始化、参数读取和类型转换统一放在主窗口内部，保持 SerialManager 只关心串口本身。
     void initSerialUi();
     void initSerialConnections();
     QByteArray currentSendData() const;

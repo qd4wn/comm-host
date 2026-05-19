@@ -4,7 +4,8 @@
 #include <QObject>
 #include <QSerialPort>
 
-// 封装 QSerialPort，避免主窗口直接处理底层串口状态。
+// 串口通信封装层：集中管理 QSerialPort 的打开、关闭、收发和错误信号。
+// 主窗口只通过该类的接口和信号交互，避免 UI 代码直接依赖底层串口状态细节。
 class SerialManager : public QObject
 {
     Q_OBJECT
@@ -23,6 +24,7 @@ public:
     qint64 writeData(const QByteArray &data);
 
 signals:
+    // 向 UI 层暴露原始字节流，由 UI 决定如何显示或解析。
     void dataReceived(const QByteArray &data);
     void errorOccurred(const QString &message);
     void openStateChanged(bool open);
