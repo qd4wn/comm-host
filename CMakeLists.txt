@@ -13,12 +13,12 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets SerialPort)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets SerialPort)
 
 set(PROJECT_SOURCES
-        main.cpp
-        main_window.cpp
-        main_window.h
-        main_window.ui
-        serial_manager.cpp
-        serial_manager.h
+        src/main.cpp
+        src/ui/main_window.cpp
+        src/ui/main_window.h
+        src/ui/main_window.ui
+        src/serial/serial_manager.cpp
+        src/serial/serial_manager.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

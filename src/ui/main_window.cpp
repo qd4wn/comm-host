@@ -1,6 +1,6 @@
 #include "main_window.h"
 #include "./ui_main_window.h"
-#include "serial_manager.h"
+#include "../serial/serial_manager.h"
 
 #include <QPlainTextEdit>
 #include <QPushButton>
