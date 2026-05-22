@@ -36,7 +36,7 @@ void MainWindow::refreshSerialPorts()
     // 仅使用 Qt 官方枚举结果；虚拟串口路径由用户手动输入，避免扫描临时目录带来误匹配。
     const QList<QSerialPortInfo> ports = QSerialPortInfo::availablePorts();
     for (const QSerialPortInfo &portInfo : ports) {
-        ui->comboBoxSerialPort->addItem(portInfo.systemLocation());
+        ui->comboBoxSerialPort->addItem(portInfo.portName());
     }
 
     if (!currentPort.isEmpty()) {

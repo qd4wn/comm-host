@@ -48,6 +48,7 @@ void SerialManager::close()
     }
 
     m_serialPort.close();
+    m_buffer.clear();
     emit openStateChanged(false);
 }
 
@@ -69,8 +70,28 @@ qint64 SerialManager::writeData(const QByteArray &data)
 
 void SerialManager::handleReadyRead()
 {
-    // readAll() 读取当前缓冲区已有数据；协议粘包/拆包后续交给解析层处理。
-    emit dataReceived(m_serialPort.readAll());
+    m_buffer.append(m_serialPort.readAll());
+
+    // 从缓冲区中循环提取完整帧 AA...BB，丢弃帧头之前的垃圾字节。
+    while (true) {
+        const int startIdx = m_buffer.indexOf('\xAA');
+        if (startIdx < 0) {
+            m_buffer.clear();
+            break;
+        }
+        if (startIdx > 0) {
+            m_buffer.remove(0, startIdx);
+        }
+
+        const int endIdx = m_buffer.indexOf('\xBB', 1);
+        if (endIdx < 0) {
+            break;  // 尚未收完一帧，等待下次 readyRead
+        }
+
+        const QByteArray frame = m_buffer.left(endIdx + 1);
+        emit dataReceived(frame);
+        m_buffer.remove(0, endIdx + 1);
+    }
 }
 
 void SerialManager::handleErrorOccurred(QSerialPort::SerialPortError error)

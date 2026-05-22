@@ -5,7 +5,7 @@
 #include <QSerialPort>
 
 // 串口通信封装层：集中管理 QSerialPort 的打开、关闭、收发和错误信号。
-// 主窗口只通过该类的接口和信号交互，避免 UI 代码直接依赖底层串口状态细节。
+// 内部维护接收缓冲区，按 AA...BB 帧组装后发射，主窗口收到的始终是完整帧。
 class SerialManager : public QObject
 {
     Q_OBJECT
@@ -24,7 +24,7 @@ public:
     qint64 writeData(const QByteArray &data);
 
 signals:
-    // 向 UI 层暴露原始字节流，由 UI 决定如何显示或解析。
+    // 向 UI 层发射完整帧，由 UI 决定如何显示或解析。
     void dataReceived(const QByteArray &data);
     void errorOccurred(const QString &message);
     void openStateChanged(bool open);
@@ -35,6 +35,7 @@ private slots:
 
 private:
     QSerialPort m_serialPort;
+    QByteArray m_buffer;
 };
 
 #endif // SERIAL_MANAGER_H
